@@ -1,0 +1,31 @@
+{
+  "name": "LogiFlow Edu",
+  "short_name": "LogiFlow",
+  "description": "Entorno visual y sin conexión para aprender algoritmos con diagramas de flujo.",
+  "lang": "es-MX",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f6fa",
+  "theme_color": "#1E4078",
+  "icons": [
+    {
+      "src": "assets/img/app-icon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/img/app-icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/img/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 60" width="320" height="60" role="img" aria-label="Leer">
+  <title>Leer</title>
+  <path d="M 40 0 L 320 0 L 280 60 L 0 60 Z" fill="#e5f6f3" stroke="#0f6b63" stroke-width="2" stroke-linejoin="round" />
+  <path d="M 48 22.8 L 59 30 L 48 37.2" fill="none" stroke="#0f6b63" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+</svg>

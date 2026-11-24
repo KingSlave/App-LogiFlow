@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#1E4078">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%231E4078'/%3E%3Cg fill='none' stroke='%23fff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='6' y='6' width='52' height='14' rx='7'/%3E%3Cpath d='M32 20v9'/%3E%3Cpath d='M32 29l16 11-16 11-16-11z'/%3E%3Cpath d='M16 40H6M48 40h10'/%3E%3C/g%3E%3C/svg%3E">
+  <title>Página no encontrada · LogiFlow Edu</title>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      try {
+        var stored = localStorage.getItem("lf-theme");
+        var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        var forced = null;
+        try {
+          forced = new URLSearchParams(window.location.search).get("theme");
+        } catch (paramError) {
+          forced = null;
+        }
+        root.dataset.theme = forced === "light" || forced === "dark"
+          ? forced
+          : (stored === "light" || stored === "dark" ? stored : (prefersDark ? "dark" : "light"));
+      } catch (error) {
+        root.dataset.theme = "light";
+      }
+    })();
+  </script>
+
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f6fa;
+      --panel: #ffffff;
+      --fg: #1c2430;
+      --muted: #546071;
+      --border: #d9e0ea;
+      --accent: #1e4080;
+      --accent-fg: #ffffff;
+      --focus: #0b63b6;
+      --shadow: 0 32px 70px -30px rgba(16, 24, 40, 0.3), 0 8px 20px -12px rgba(16, 24, 40, 0.18);
+    }
+
+    [data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #0f141b;
+      --panel: #1a222d;
+      --fg: #e6ebf2;
+      --muted: #aab6c6;
+      --border: #2c3745;
+      --accent: #6ea8ff;
+      --accent-fg: #07111f;
+      --focus: #ffffff;
+      --shadow: 0 32px 70px -30px rgba(0, 0, 0, 0.8), 0 8px 20px -12px rgba(0, 0, 0, 0.55);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      display: grid;
+      min-height: 100vh;
+      margin: 0;
+      padding: 2rem;
+      place-items: center;
+      background: var(--bg);
+      background: radial-gradient(circle at 50% 20%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 60%), var(--bg);
+      color: var(--fg);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.65;
+    }
+
+    .notfound-card {
+      max-width: 560px;
+      padding: 2.5rem;
+      border: 1px solid var(--border);
+      border-radius: 1.1rem;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 40px;
+      height: 40px;
+      margin: 0 auto 1.25rem;
+      place-items: center;
+      border-radius: 12px;
+      background: var(--accent);
+      color: var(--accent-fg);
+    }
+
+    .brand-mark svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    .eyebrow {
+      margin: 0 0 0.9rem;
+      color: var(--accent);
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.9rem, 5vw, 2.8rem);
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+      text-wrap: balance;
+    }
+
+    p {
+      margin: 0.9rem 0 1.5rem;
+      color: var(--muted);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      padding: 0.85rem 1.3rem;
+      border-radius: 999px;
+      background: var(--accent);
+      color: var(--accent-fg);
+      font-weight: 700;
+      text-decoration: none;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .btn svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 1.25rem;
+      }
+
+      .notfound-card {
+        padding: 1.75rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .btn {
+        transition: none;
+      }
+
+      .btn:hover {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="notfound">
+    <div class="notfound-card">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="6" y="6" width="52" height="14" rx="7"/>
+          <path d="M32 20v9"/>
+          <path d="M32 29l16 11-16 11-16-11z"/>
+          <path d="M16 40H6M48 40h10"/>
+        </svg>
+      </span>
+      <p class="eyebrow">Error 404</p>
+      <h1>Esta página no forma parte del flujo.</h1>
+      <p>El enlace puede haber cambiado o la página todavía no existe. Vuelve al inicio para conocer LogiFlow Edu y el estado de las descargas.</p>
+      <a class="btn" href="/" data-home>
+        Volver al inicio
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      var repo = "App-LogiFlow";
+      var path = window.location.pathname;
+      var link = document.querySelector("[data-home]");
+      if (link && /\.github\.io$/i.test(window.location.hostname) && path.indexOf("/" + repo + "/") === 0) {
+        link.setAttribute("href", "/" + repo + "/");
+      }
+    })();
+  </script>
+</body>
+</html>

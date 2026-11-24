@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="LogiFlow Edu">
+  <rect width="64" height="64" rx="12" fill="#1E4078"/>
+  <g fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="6" y="6" width="52" height="14" rx="7"/>
+    <path d="M32 20v9"/>
+    <path d="M32 29l16 11-16 11-16-11z"/>
+    <path d="M16 40H6"/>
+    <path d="M48 40h10"/>
+  </g>
+</svg>

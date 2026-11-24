@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>LogiFlow Edu — Aprende a programar dibujando el flujo</title>
+  <meta name="description" content="LogiFlow Edu es un entorno visual y sin conexión para aprender algoritmos con diagramas de flujo. Ejecuta, depura, exporta y programa a Karel. Próximamente para Windows y macOS.">
+  <meta name="author" content="LogiFlow Edu">
+  <meta name="theme-color" content="#1E4078">
+  <meta name="robots" content="index,follow">
+
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/img/app-icon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/img/app-icon-128.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="assets/css/styles.css">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="LogiFlow Edu">
+  <meta property="og:title" content="LogiFlow Edu — Aprende a programar dibujando el flujo">
+  <meta property="og:description" content="Diseña, ejecuta y depura programas como diagramas de flujo. Karel, tortuga, exportación SVG/PNG y código generado. Próximamente para Windows y macOS.">
+  <meta property="og:image" content="assets/img/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="LogiFlow Edu: aprende a programar dibujando el flujo">
+  <meta property="og:locale" content="es_MX">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="LogiFlow Edu — Aprende a programar dibujando el flujo">
+  <meta name="twitter:description" content="Un entorno visual y sin conexión para aprender algoritmos con diagramas de flujo. Próximamente para Windows y macOS.">
+  <meta name="twitter:image" content="assets/img/og-image.png">
+  <meta name="twitter:image:alt" content="LogiFlow Edu: aprende a programar dibujando el flujo">
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      root.classList.add("js");
+      try {
+        var stored = localStorage.getItem("lf-theme");
+        var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        var forced = null;
+        try {
+          forced = new URLSearchParams(window.location.search).get("theme");
+        } catch (paramError) {
+          forced = null;
+        }
+        root.dataset.theme = forced === "light" || forced === "dark"
+          ? forced
+          : (stored === "light" || stored === "dark" ? stored : (prefersDark ? "dark" : "light"));
+      } catch (error) {
+        root.dataset.theme = "light";
+      }
+    })();
+  </script>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "LogiFlow Edu",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Windows 10, Windows 11, macOS",
+      "inLanguage": ["es-MX", "en-US"],
+      "description": "Entorno de escritorio sin conexión para diseñar, ejecutar, depurar y exportar programas representados como diagramas de flujo, con tortuga, Karel y herramientas de aula.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Editor de diagramas de flujo con 25 instrucciones",
+        "Ejecución paso a paso, pausa y puntos de interrupción",
+        "Monitor de variables y consola de ejecución",
+        "Exportación de diagramas en SVG y PNG",
+        "Generación de pseudocódigo y Python",
+        "Tortuga y mundo de Karel",
+        "Herramientas de trazabilidad y similitud para el aula"
+      ]
+    }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <symbol id="i-flow" viewBox="0 0 24 24">
+      <rect x="4" y="3" width="16" height="5" rx="2.5"/>
+      <path d="M12 8v4"/>
+      <path d="M12 12l5 3.5-5 3.5-5-3.5z"/>
+      <path d="M5 17H3M19 17h2"/>
+    </symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10-6.5z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-step" viewBox="0 0 24 24"><path d="M7 5v14l9-7z" fill="currentColor" stroke="none"/><path d="M19 5v14"/></symbol>
+    <symbol id="i-vars" viewBox="0 0 24 24">
+      <path d="M9 4H8a3 3 0 0 0-3 3v3a2 2 0 0 1-2 2 2 2 0 0 1 2 2v3a3 3 0 0 0 3 3h1"/>
+      <path d="M15 4h1a3 3 0 0 1 3 3v3a2 2 0 0 0 2 2 2 2 0 0 0-2 2v3a3 3 0 0 1-3 3h-1"/>
+    </symbol>
+    <symbol id="i-diagnostics" viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/><path d="M12 9v4"/><path d="M12 16h.01"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5"/><path d="M16 7l5 5-5 5"/><path d="M13 4l-2 16"/></symbol>
+    <symbol id="i-export" viewBox="0 0 24 24"><path d="M12 15V3"/><path d="M8 7l4-4 4 4"/><path d="M4 14v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/></symbol>
+    <symbol id="i-turtle" viewBox="0 0 24 24">
+      <ellipse cx="11" cy="14" rx="7" ry="5"/>
+      <circle cx="19" cy="12" r="2.5"/><circle cx="20" cy="11" r=".5" fill="currentColor"/>
+      <path d="M5 18l-2 2M9 19l-1 3M15 19l1 3M17 18l2 2M7 9L5 7M15 9l2-2"/>
+    </symbol>
+    <symbol id="i-robot" viewBox="0 0 24 24">
+      <rect x="5" y="7" width="14" height="12" rx="3"/>
+      <path d="M12 3v4"/><circle cx="12" cy="3" r="1" fill="currentColor"/>
+      <circle cx="9" cy="12" r="1" fill="currentColor"/><circle cx="15" cy="12" r="1" fill="currentColor"/>
+      <path d="M9 16h6"/><path d="M3 11v4M21 11v4"/>
+    </symbol>
+    <symbol id="i-aula" viewBox="0 0 24 24">
+      <circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/>
+      <path d="M16 5.5a3 3 0 0 1 0 5.5"/><path d="M17 14a5.5 5.5 0 0 1 4 5"/>
+    </symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M8 11l4 4 4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></symbol>
+    <symbol id="i-windows" viewBox="0 0 24 24"><path d="M3 5.5l8-1v7H3zM12 4.4l9-1.2v8.3h-9zM3 12.5h8v7l-8-1zM12 12.5h9v8.3l-9-1.2z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-apple" viewBox="0 0 24 24"><path d="M16.37 1.43c0 1.14-.42 2.2-1.26 3.02-.9.9-2.02 1.43-3.03 1.35-.12-1.08.42-2.2 1.2-3 .86-.87 2.28-1.5 3.09-1.37zM20.94 17.1c-.55 1.28-.82 1.85-1.53 2.98-.99 1.58-2.39 3.55-4.12 3.56-1.54.01-1.94-.99-4.03-.98-2.09.01-2.53.99-4.07.98-1.73-.01-3.05-1.8-4.04-3.38C-.41 15.76-.76 10.4 1.4 7.53c1.06-1.46 2.73-2.31 4.3-2.31 1.6 0 2.6.99 3.92.99 1.28 0 2.06-.99 3.9-.99 1.39 0 2.87.76 3.92 2.07-3.45 1.89-2.89 6.82.5 8.81z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2z"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 5.5v16"/><path d="M8 7h8M8 11h6"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 14v2"/></symbol>
+    <symbol id="i-offline" viewBox="0 0 24 24"><path d="M2 2l20 20"/><path d="M8.5 15.5a5 5 0 0 1 7 0"/><path d="M5 12a10 10 0 0 1 14 0"/><circle cx="12" cy="19" r="1" fill="currentColor"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 6a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 12l9 5 9-5"/><path d="M3 16l9 5 9-5"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6"/><path d="M12 17h.01"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><path d="M12 7h.01"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></symbol>
+  </svg>
+
+  <header class="site-header" data-header>
+    <div class="container header-inner">
+      <a class="brand" href="#inicio" aria-label="LogiFlow Edu, ir al inicio">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6" y="6" width="52" height="14" rx="7"/>
+            <path d="M32 20v9"/>
+            <path d="M32 29l16 11-16 11-16-11z"/>
+            <path d="M16 40H6M48 40h10"/>
+          </svg>
+        </span>
+        <span class="brand-name">LogiFlow <span>Edu</span></span>
+      </a>
+
+      <nav class="site-nav" id="primary-nav" data-nav aria-label="Navegación principal">
+        <ul>
+          <li><a href="#funciones">Funciones</a></li>
+          <li><a href="#galeria">Galería</a></li>
+          <li><a href="#aula">Aula</a></li>
+          <li><a href="#descargas">Descargas</a></li>
+          <li><a href="#preguntas">Preguntas</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a tema oscuro" title="Cambiar tema">
+          <svg class="icon icon-moon" aria-hidden="true"><use href="#i-moon"></use></svg>
+          <svg class="icon icon-sun" aria-hidden="true"><use href="#i-sun"></use></svg>
+        </button>
+        <a class="btn btn-primary btn-sm header-cta" href="#descargas">
+          <svg class="icon" aria-hidden="true"><use href="#i-download"></use></svg>
+          Descargas
+        </a>
+        <button class="icon-button nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="primary-nav" aria-label="Abrir menú">
+          <svg class="icon icon-menu" aria-hidden="true"><use href="#i-menu"></use></svg>
+          <svg class="icon icon-close" aria-hidden="true"><use href="#i-close"></use></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenido">
+
+    <section class="hero" id="inicio">
+      <div class="hero-glow hero-glow-a" aria-hidden="true"></div>
+      <div class="hero-glow hero-glow-b" aria-hidden="true"></div>
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span>Freeware para Windows y macOS</span>
+          </p>
+          <h1>Aprende a programar <span class="text-gradient">dibujando el flujo.</span></h1>
+          <p class="lead">LogiFlow Edu es un entorno de escritorio, sin conexión, para diseñar, ejecutar y depurar programas como diagramas de flujo. Cada figura es una instrucción; cada paso se ve en el lienzo, en la consola y en tus variables.</p>
+          <p class="hero-note">Pensado para el aula y para quien da sus primeros pasos en algoritmos.</p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#funciones">
+              Explorar funciones
+              <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+            </a>
+            <a class="btn btn-secondary" href="#descargas">
+              <svg class="icon" aria-hidden="true"><use href="#i-download"></use></svg>
+              Ver descargas
+              <span class="badge badge-soft" data-release-hero-badge>Próximamente</span>
+            </a>
+          </div>
+
+          <ul class="hero-points">
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg>Sin cuenta</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-offline"></use></svg>Funciona sin conexión</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-layers"></use></svg>es-MX / en-US</li>
+          </ul>
+        </div>
+
+        <figure class="hero-visual">
+          <div class="window-frame">
+            <div class="window-bar" aria-hidden="true">
+              <span class="window-dots"><i></i><i></i><i></i></span>
+              <span class="window-title">LogiFlow Edu</span>
+              <span class="window-badge">Ilustración</span>
+            </div>
+            <img src="assets/img/interfaz.svg" width="1000" height="620" alt="Ilustración de la ventana de LogiFlow Edu: barra de herramientas, lienzo con un diagrama de saludo, barra lateral con consola, variables, diagnósticos y bitácora, y barra de estado." fetchpriority="high">
+          </div>
+          <span class="float-chip float-chip-a"><svg class="icon" aria-hidden="true"><use href="#i-play"></use></svg>Ejecución paso a paso</span>
+          <span class="float-chip float-chip-b"><svg class="icon" aria-hidden="true"><use href="#i-flow"></use></svg>25 figuras</span>
+          <figcaption>Ilustración de la interfaz · 1 Barra de herramientas · 2 Lienzo · 3 Barra lateral · 4 Consola · 5 Variables y diagnósticos · 6 Estado</figcaption>
+        </figure>
+      </div>
+
+      <div class="container">
+        <ul class="trust-strip" aria-label="Características principales">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg><span><strong>Tus diagramas son tuyos.</strong> Se guardan en tu equipo.</span></li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-code"></use></svg><span><strong>Del flujo al código.</strong> Pseudocódigo y Python.</span></li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-robot"></use></svg><span><strong>Karel incluido.</strong> Mundos, sensores y objetivos.</span></li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-book"></use></svg><span><strong>Manual sin conexión.</strong> Dentro de la aplicación.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="stats-band" aria-label="LogiFlow Edu en cifras">
+      <div class="container stats-grid">
+        <div class="stat"><strong>25</strong><span>figuras de instrucción</span></div>
+        <div class="stat"><strong>17</strong><span>programas de ejemplo</span></div>
+        <div class="stat"><strong>9</strong><span>sensores de Karel</span></div>
+        <div class="stat"><strong>2</strong><span>idiomas de interfaz</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="como-funciona">
+      <div class="container">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow">Cómo funciona</p>
+          <h2>Del primer trazo al programa completo.</h2>
+          <p class="section-lead">Dibuja, ejecuta y comparte. No necesitas escribir código para empezar, pero puedes llevarlo contigo cuando quieras.</p>
+        </header>
+
+        <ol class="steps">
+          <li class="step-card" data-reveal>
+            <span class="step-num" aria-hidden="true">01</span>
+            <span class="step-icon tone-declare"><svg class="icon" aria-hidden="true"><use href="#i-flow"></use></svg></span>
+            <h3>Dibuja</h3>
+            <p>Inserta figuras en cualquier enlace del diagrama, edítalas con doble clic y organiza decisiones, ciclos y funciones. El lienzo conserva el orden del programa.</p>
+            <span class="step-meta">25 figuras · Enlaces «+» · Deshacer</span>
+          </li>
+          <li class="step-card" data-reveal>
+            <span class="step-num" aria-hidden="true">02</span>
+            <span class="step-icon tone-io"><svg class="icon" aria-hidden="true"><use href="#i-step"></use></svg></span>
+            <h3>Ejecuta</h3>
+            <p>Ejecuta, avanza paso a paso, pausa y detén. Ajusta la velocidad y observa la consola, las variables y los frames de cada invocación.</p>
+            <span class="step-meta">Ejecutar · Paso · Pausa · Breakpoints</span>
+          </li>
+          <li class="step-card" data-reveal>
+            <span class="step-num" aria-hidden="true">03</span>
+            <span class="step-icon tone-call"><svg class="icon" aria-hidden="true"><use href="#i-export"></use></svg></span>
+            <h3>Comparte</h3>
+            <p>Exporta el diagrama en SVG o PNG, genera pseudocódigo o Python y guarda tu programa en un archivo <code>.lfd</code> para continuar después.</p>
+            <span class="step-meta">SVG · PNG · Pseudocódigo · Python</span>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="funciones">
+      <div class="container">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow">Funciones</p>
+          <h2>Todo el ciclo del algoritmo, en un solo lugar.</h2>
+          <p class="section-lead">Desde la primera figura hasta la entrega final: edición, ejecución, depuración, código y exportación, sin salir de la aplicación.</p>
+        </header>
+
+        <div class="feature-grid">
+          <article class="feature-card" data-reveal>
+            <span class="feature-icon tone-declare"><svg class="icon" aria-hidden="true"><use href="#i-flow"></use></svg></span>
+            <h3>Editor visual estructurado</h3>
+            <p>Inserta figuras en cualquier enlace <strong>+</strong>, edítalas con doble clic y organiza decisiones, ciclos y funciones. Deshacer, rehacer, zoom y ajuste al contenido.</p>
+            <span class="feature-tag">25 figuras</span>
+          </article>
+
+          <article class="feature-card" data-reveal>
+            <span class="feature-icon tone-io"><svg class="icon" aria-hidden="true"><use href="#i-step"></use></svg></span>
+            <h3>Ejecución y depuración</h3>
+            <p>Ejecuta, avanza paso a paso, pausa y detén. Ajusta la velocidad, usa puntos de interrupción y observa el estado de la sesión en todo momento.</p>
+            <span class="feature-tag">Paso a paso</span>
+          </article>
+
+          <article class="feature-card" data-reveal>
+            <span class="feature-icon tone-process"><svg class="icon" aria-hidden="true"><use href="#i-vars"></use></svg></span>
+            <h3>Consola y variables</h3>
+            <p>La consola separa salida, entradas y errores. El monitor muestra nombre, tipo y valor de cada variable, con frames para las invocaciones recursivas.</p>
+            <span class="feature-tag">En vivo</span>
+          </article>
+
+          <article class="feature-card" data-reveal>
+            <span class="feature-icon tone-break"><svg class="icon" aria-hidden="true"><use href="#i-diagnostics"></use></svg></span>
+            <h3>Diagnósticos claros</h3>
+            <p>Errores y advertencias con código <code>LF####</code>, explicación localizada y la figura afectada. Corrige antes de ejecutar o de guardar Python.</p>
+            <span class="feature-tag">LF####</span>
+          </article>
+
+          <article class="feature-card" data-reveal>
+            <span class="feature-icon tone-code"><svg class="icon" aria-hidden="true"><use href="#i-code"></use></svg></span>
+            <h3>Código generado</h3>
+            <p>Obtén pseudocódigo en español y Python idiomático, correlacionados con las figuras. Cambia de objetivo, copia el texto o guárdalo como archivo.</p>
+            <span class="feature-tag">Pseudocódigo · Python</span>
+          </article>
+
+          <article class="feature-card" data-reveal>
+            <span class="feature-icon tone-export"><svg class="icon" aria-hidden="true"><use href="#i-export"></use></svg></span>
+            <h3>Exportación SVG y PNG</h3>
+            <p>Exporta la función activa con escala, margen y fondo transparente. El SVG es autocontenido y el PNG se rasteriza desde el mismo dibujo del lienzo.</p>
+            <span class="feature-tag">Hasta 300 %</span>
+          </article>
+
+          <article class="feature-card" data-reveal>
+            <span class="feature-icon tone-turtle"><svg class="icon" aria-hidden="true"><use href="#i-turtle"></use></svg></span>
+            <h3>Tortuga</h3>
+            <p>Cinco instrucciones y diez colores para convertir ciclos, ángulos y variables en dibujos. Exporta el trazo completo en SVG cuando termine la sesión.</p>
+            <span class="feature-tag">Geometría</span>
+          </article>
+
+          <article class="feature-card" data-reveal>
+            <span class="feature-icon tone-karel"><svg class="icon" aria-hidden="true"><use href="#i-robot"></use></svg></span>
+            <h3>Karel</h3>
+            <p>Cinco acciones y nueve sensores en un mundo editable con bardas, zumbadores y mochila. Los objetivos formativos evalúan el resultado del algoritmo.</p>
+            <span class="feature-tag">Robot</span>
+          </article>
+
+          <article class="feature-card" data-reveal>
+            <span class="feature-icon tone-aula"><svg class="icon" aria-hidden="true"><use href="#i-aula"></use></svg></span>
+            <h3>Herramientas de aula</h3>
+            <p>Reporte de trazabilidad de los guardados y comparador de similitud entre entregas. Apoyos para revisar el proceso, con límites explicados y datos locales.</p>
+            <span class="feature-tag">Docencia</span>
+          </article>
+        </div>
+
+        <aside class="privacy-banner" id="privacidad" data-reveal>
+          <span class="privacy-icon" aria-hidden="true"><svg class="icon"><use href="#i-shield"></use></svg></span>
+          <div class="privacy-copy">
+            <h3>Privado por diseño.</h3>
+            <p>Tus diagramas se guardan en archivos <code>.lfd</code> en tu equipo. La aplicación funciona sin conexión y no envía el contenido de tus programas a ningún servicio.</p>
+          </div>
+          <ul class="privacy-points">
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg>Sin telemetría del contenido</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg>Sin cuenta ni nube</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg>Borradores locales</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="codigo">
+      <div class="container split">
+        <div class="split-copy" data-reveal>
+          <p class="eyebrow">Código generado</p>
+          <h2>Tu diagrama también se lee.</h2>
+          <p class="section-lead">Genera una versión textual de tu programa para explicarlo en clase o continuar la práctica en Python. Cada línea se corresponde con las figuras del diagrama.</p>
+          <ul class="check-list">
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg><span><strong>Pseudocódigo en español</strong> para leer y explicar el algoritmo.</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg><span><strong>Python idiomático</strong> para seguir aprendiendo en otro entorno.</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg><span><strong>Números de línea, copiar y guardar</strong> sin salir de la ventana.</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg><span><strong>Avisos claros</strong> si el diagrama aún no es válido o usa Karel.</span></li>
+          </ul>
+          <p class="note-inline"><svg class="icon" aria-hidden="true"><use href="#i-info"></use></svg>El código es una ayuda, no una réplica exacta: la ejecución oficial es la de LogiFlow Edu.</p>
+        </div>
+
+        <div class="code-card" data-reveal>
+          <div class="code-card-top">
+            <span class="code-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="code-file">saludo · generado</span>
+            <span class="badge badge-code">Solo lectura</span>
+          </div>
+          <div class="tabs" data-tabs>
+            <div class="tablist" role="tablist" aria-label="Objetivo del código generado">
+              <button class="tab is-active" id="tab-pseudo" type="button" role="tab" aria-selected="true" aria-controls="panel-pseudo" tabindex="0">Pseudocódigo</button>
+              <button class="tab" id="tab-python" type="button" role="tab" aria-selected="false" aria-controls="panel-python" tabindex="-1">Python</button>
+            </div>
+            <div class="tabpanel" id="panel-pseudo" role="tabpanel" aria-labelledby="tab-pseudo" tabindex="0">
+              <pre><code><span class="tok-key">Programa</span> Saludo
+<span class="tok-key">Inicio</span>
+    <span class="tok-key">Declarar</span> nombre: Cadena
+    <span class="tok-key">Leer</span> nombre
+    <span class="tok-key">Si</span> nombre == <span class="tok-str">""</span> entonces
+        <span class="tok-key">Escribir</span> <span class="tok-str">"Hola, persona desconocida"</span>
+    <span class="tok-key">SiNo</span>
+        <span class="tok-key">Escribir</span> <span class="tok-str">"Hola, "</span> + nombre
+    <span class="tok-key">FinSi</span>
+<span class="tok-key">Fin</span></code></pre>
+            </div>
+            <div class="tabpanel" id="panel-python" role="tabpanel" aria-labelledby="tab-python" tabindex="0" hidden>
+              <pre><code><span class="tok-key">def</span> <span class="tok-fn">main</span>():
+    nombre = <span class="tok-fn">input</span>(<span class="tok-str">"Valor para nombre (Cadena): "</span>)
+    <span class="tok-key">if</span> nombre == <span class="tok-str">""</span>:
+        <span class="tok-fn">print</span>(<span class="tok-str">"Hola, persona desconocida"</span>)
+    <span class="tok-key">else</span>:
+        <span class="tok-fn">print</span>(<span class="tok-str">"Hola, "</span> + nombre)
+
+<span class="tok-key">if</span> __name__ == <span class="tok-str">"__main__"</span>:
+    <span class="tok-fn">main</span>()</code></pre>
+            </div>
+          </div>
+          <p class="code-caption">Ejemplo ilustrativo del resultado que puedes generar desde un diagrama.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="galeria">
+      <div class="container">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow">Galería</p>
+          <h2>Familiar desde el primer clic.</h2>
+          <p class="section-lead">Una ventana con el diagrama al centro y la información de la ejecución a la mano. Estas ilustraciones usan los mismos símbolos y colores de la aplicación.</p>
+        </header>
+
+        <div class="gallery-grid">
+          <figure class="figure-card figure-main" data-reveal>
+            <div class="figure-frame">
+              <img src="assets/img/anatomia-figura.svg" width="760" height="440" alt="Anatomía de una figura del diagrama: forma y color de la familia, etiqueta de la instrucción, enlace para insertar y botón para quitar." loading="lazy">
+            </div>
+            <figcaption><strong>Cada figura comunica algo.</strong> Forma, color y etiqueta se combinan; el enlace «+» aparece entre figuras y dentro de ramas y cuerpos.</figcaption>
+          </figure>
+
+          <figure class="figure-card" data-reveal>
+            <div class="figure-frame">
+              <img src="assets/img/karel-mundo.svg" width="415" height="364" alt="Mundo de ejemplo de Karel con cuadrícula, robot con su rumbo, zumbadores, bardas y coordenadas." loading="lazy">
+            </div>
+            <figcaption><strong>Karel.</strong> Un mundo editable con calles, avenidas, bardas, zumbadores y un robot que responde al algoritmo.</figcaption>
+          </figure>
+
+          <figure class="figure-card" data-reveal>
+            <div class="figure-frame">
+              <img src="assets/img/tortuga-cuadrado.svg" width="560" height="440" alt="Panel de la tortuga con controles de cuadrícula, zoom, ajuste y exportación, ejes y el trazado de un cuadrado." loading="lazy">
+            </div>
+            <figcaption><strong>Tortuga.</strong> El panel real con sus controles y el cuadrado en trazado: tres lados dibujados y el marcador de rumbo listo para cerrar el cuarto.</figcaption>
+          </figure>
+        </div>
+
+        <div class="symbol-panel" data-reveal>
+          <div class="symbol-panel-head">
+            <h3>Un lenguaje visual propio</h3>
+            <p>25 figuras de instrucción, cada una con su forma y su familia de color. Estos son algunos ejemplos:</p>
+          </div>
+          <ul class="symbol-strip" aria-label="Ejemplos de figuras del diagrama">
+            <li class="symbol-chip"><img src="assets/img/simbolos/declare.svg" width="300" height="58" alt="" loading="lazy"><span>Declarar</span></li>
+            <li class="symbol-chip"><img src="assets/img/simbolos/input.svg" width="300" height="68" alt="" loading="lazy"><span>Leer</span></li>
+            <li class="symbol-chip"><img src="assets/img/simbolos/output.svg" width="300" height="68" alt="" loading="lazy"><span>Escribir</span></li>
+            <li class="symbol-chip"><img src="assets/img/simbolos/if.svg" width="300" height="112" alt="" loading="lazy"><span>Si</span></li>
+            <li class="symbol-chip"><img src="assets/img/simbolos/while.svg" width="300" height="88" alt="" loading="lazy"><span>Mientras</span></li>
+            <li class="symbol-chip"><img src="assets/img/simbolos/call.svg" width="300" height="58" alt="" loading="lazy"><span>Llamar</span></li>
+            <li class="symbol-chip"><img src="assets/img/simbolos/forward.svg" width="300" height="68" alt="" loading="lazy"><span>Avanzar</span></li>
+            <li class="symbol-chip"><img src="assets/img/simbolos/turn.svg" width="300" height="68" alt="" loading="lazy"><span>Girar</span></li>
+            <li class="symbol-chip"><img src="assets/img/simbolos/karel-move.svg" width="300" height="68" alt="" loading="lazy"><span>Karel: avanzar</span></li>
+            <li class="symbol-chip"><img src="assets/img/simbolos/karel-turn-off.svg" width="300" height="68" alt="" loading="lazy"><span>Karel: apagar</span></li>
+          </ul>
+        </div>
+
+        <p class="fine-print">Ilustraciones propias generadas con el catálogo de símbolos de la aplicación. No son capturas de otro producto.</p>
+      </div>
+    </section>
+
+    <section class="section" id="practicar">
+      <div class="container">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow">Dos formas de practicar</p>
+          <h2>Un robot y una tortuga, el mismo editor.</h2>
+          <p class="section-lead">Karel y la tortuga convierten secuencias, decisiones y ciclos en algo que se puede ver. No son ventanas aparte: comparten el diagrama, la ejecución y el depurador.</p>
+        </header>
+
+        <div class="practice-grid">
+          <article class="practice-card practice-karel" data-reveal>
+            <div class="practice-head">
+              <span class="practice-icon" aria-hidden="true"><svg class="icon"><use href="#i-robot"></use></svg></span>
+              <div>
+                <p class="mini-label">Incluido</p>
+                <h3>Karel</h3>
+              </div>
+            </div>
+            <p class="practice-lead">Un robot en un mundo de calles y avenidas. El programa lo mueve, lo hace girar, recoge o deja zumbadores y lo apaga al terminar.</p>
+            <ul class="tick-list">
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg><span><strong>5 acciones atómicas</strong> que no dejan estados a medias.</span></li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg><span><strong>9 sensores booleanos</strong> para condiciones, como <code>KarelFrontClear()</code>.</span></li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg><span><strong>Mundos de hasta 100 × 100</strong> con bardas, zumbadores y mochila.</span></li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg><span><strong>Objetivos formativos</strong> de posición, orientación, mochila y esquinas.</span></li>
+            </ul>
+            <p class="code-chip"><span>Ejemplo</span> not KarelFacingNorth()</p>
+          </article>
+
+          <article class="practice-card practice-turtle" data-reveal>
+            <div class="practice-head">
+              <span class="practice-icon" aria-hidden="true"><svg class="icon"><use href="#i-turtle"></use></svg></span>
+              <div>
+                <p class="mini-label">Incluido</p>
+                <h3>Tortuga</h3>
+              </div>
+            </div>
+            <p class="practice-lead">Una tortuga que dibuja mientras el programa se ejecuta. Ideal para ver ángulos, repeticiones y colores sin salir del diagrama.</p>
+            <ul class="tick-list">
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg><span><strong>5 instrucciones</strong>: borrar, avanzar, ir a origen, lápiz y girar.</span></li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg><span><strong>10 colores de lápiz</strong> y trazos exportables en SVG.</span></li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg><span><strong>Cuadrícula y zoom</strong> para revisar la figura completa.</span></li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg><span><strong>Hasta 100.000 segmentos</strong> por dibujo, con límites explicados.</span></li>
+            </ul>
+            <p class="code-chip"><span>Ejemplo</span> Avanzar 140 · Girar 90°</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="aula">
+      <div class="container">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow">Aula</p>
+          <h2>Pensado para enseñar y para aprender.</h2>
+          <p class="section-lead">Herramientas que ayudan a revisar el proceso de una entrega y a conversar sobre él. Son apoyos para el docente, no veredictos automáticos.</p>
+        </header>
+
+        <div class="classroom-grid">
+          <article class="classroom-card" data-reveal>
+            <span class="classroom-icon tone-declare" aria-hidden="true"><svg class="icon"><use href="#i-clock"></use></svg></span>
+            <h3>Reporte de trazabilidad</h3>
+            <p>Lee el archivo guardado y muestra dos tablas sincronizadas: revisiones, instrucciones y funciones junto a la identidad del equipo y del archivo.</p>
+            <p class="fine-print">Solo lectura · desde el <code>.lfd</code> · sin la configuración local del estudiante</p>
+          </article>
+
+          <article class="classroom-card" data-reveal>
+            <span class="classroom-icon tone-process" aria-hidden="true"><svg class="icon"><use href="#i-layers"></use></svg></span>
+            <h3>Comparador de similitud</h3>
+            <p>Compara dos o más entregas con la estructura normalizada, ignora nombres de variables y comentarios, y cruza metadatos para señalar casos que conviene revisar.</p>
+            <p class="fine-print">Porcentaje estructural · pares distintos · anomalías de equipo</p>
+          </article>
+
+          <article class="classroom-card" data-reveal>
+            <span class="classroom-icon tone-karel" aria-hidden="true"><svg class="icon"><use href="#i-shield"></use></svg></span>
+            <h3>Privacidad y límites</h3>
+            <p>El contenido de los diagramas nunca sale del equipo. La evidencia es correlativa y falsificable: sirve para detectar casos de forma casual y conversar con el estudiante.</p>
+            <p class="fine-print"><a href="#privacidad">Cómo se protegen tus datos</a></p>
+          </article>
+        </div>
+
+        <blockquote class="classroom-quote" data-reveal>
+          <svg class="icon" aria-hidden="true"><use href="#i-spark"></use></svg>
+          <p>La decisión final es del docente, con el contexto del curso. Una alerta es una invitación a revisar, no una conclusión.</p>
+        </blockquote>
+      </div>
+    </section>
+
+    <section class="section downloads" id="descargas">
+      <div class="container">
+        <header class="section-head" data-reveal>
+          <p class="eyebrow">Descargas</p>
+          <h2>Instala LogiFlow Edu en tu equipo.</h2>
+          <p class="section-lead"><span data-release-lead>Los instaladores para Windows y macOS están en preparación y se publicarán en esta página.</span></p>
+        </header>
+
+        <div class="release-banner" data-release-banner data-reveal>
+          <span class="release-icon" aria-hidden="true"><svg class="icon"><use href="#i-alert"></use></svg></span>
+          <div>
+            <h3>Instaladores en preparación</h3>
+            <p>Todavía no hay enlaces de descarga publicados. Cuando los instaladores estén listos, los botones de esta sección se habilitarán y se añadirán las notas de la versión.</p>
+          </div>
+          <span class="badge badge-pending" data-release-status>En preparación</span>
+        </div>
+
+        <div class="release-banner release-ready" data-release-ready hidden>
+          <span class="release-icon" aria-hidden="true"><svg class="icon"><use href="#i-check"></use></svg></span>
+          <div>
+            <h3>Descarga disponible</h3>
+            <p>Los instaladores ya están publicados. Elige el de tu sistema.</p>
+          </div>
+          <span class="badge badge-ready" data-release-status>Disponible</span>
+        </div>
+
+        <p class="os-note" data-os-note hidden></p>
+
+        <div class="download-grid">
+          <article class="download-card" data-platform="windows" data-reveal>
+            <div class="download-top">
+              <span class="os-icon os-windows" aria-hidden="true"><svg class="icon"><use href="#i-windows"></use></svg></span>
+              <div class="download-title">
+                <h3>Windows</h3>
+                <p>Windows 10 u 11 · 64 bits</p>
+              </div>
+              <span class="badge badge-current" data-os-badge hidden>Tu sistema</span>
+            </div>
+
+            <dl class="spec-list">
+              <div><dt>Formato</dt><dd>Instalador MSI / EXE</dd></div>
+              <div><dt>Arquitectura</dt><dd>x86-64</dd></div>
+              <div><dt>Instalación</dt><dd>Asistente paso a paso</dd></div>
+            </dl>
+
+            <a class="btn btn-download is-pending" href="#descargas" data-release-action aria-disabled="true" tabindex="-1">
+              <svg class="icon" aria-hidden="true"><use href="#i-download"></use></svg>
+              <span data-release-label>Próximamente</span>
+            </a>
+
+            <p class="download-note">Sigue el asistente de instalación y abre LogiFlow Edu desde el menú Inicio.</p>
+          </article>
+
+          <article class="download-card" data-platform="macos" data-reveal>
+            <div class="download-top">
+              <span class="os-icon os-macos" aria-hidden="true"><svg class="icon"><use href="#i-apple"></use></svg></span>
+              <div class="download-title">
+                <h3>macOS</h3>
+                <p>Apple silicon · arm64</p>
+              </div>
+              <span class="badge badge-current" data-os-badge hidden>Tu sistema</span>
+            </div>
+
+            <dl class="spec-list">
+              <div><dt>Formato</dt><dd>Imagen DMG</dd></div>
+              <div><dt>Arquitectura</dt><dd>Apple silicon (arm64)</dd></div>
+              <div><dt>Instalación</dt><dd>Arrastra la app a Aplicaciones</dd></div>
+            </dl>
+
+            <a class="btn btn-download is-pending" href="#descargas" data-release-action aria-disabled="true" tabindex="-1">
+              <svg class="icon" aria-hidden="true"><use href="#i-download"></use></svg>
+              <span data-release-label>Próximamente</span>
+            </a>
+
+            <p class="download-note">La versión para Mac con procesador Intel no forma parte del primer lanzamiento.</p>
+          </article>
+        </div>
+
+        <div class="download-assurances" data-reveal>
+          <div class="assurance">
+            <svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg>
+            <div><strong>Sin cuenta</strong><span>No necesitas crear un usuario.</span></div>
+          </div>
+          <div class="assurance">
+            <svg class="icon" aria-hidden="true"><use href="#i-spark"></use></svg>
+            <div><strong>Sin costo</strong><span>Freeware con licencia propietaria.</span></div>
+          </div>
+          <div class="assurance">
+            <svg class="icon" aria-hidden="true"><use href="#i-offline"></use></svg>
+            <div><strong>Sin conexión</strong><span>Funciona con o sin Internet.</span></div>
+          </div>
+        </div>
+
+        <div class="post-release" data-reveal>
+          <h3 data-release-howto-title>Cuando se publique</h3>
+          <ol class="mini-steps">
+            <li>
+              <span class="mini-step-num" aria-hidden="true">1</span>
+              <div><strong>Elige tu sistema</strong><p>Windows o macOS.</p></div>
+            </li>
+            <li>
+              <span class="mini-step-num" aria-hidden="true">2</span>
+              <div><strong>Descarga el instalador</strong><p>MSI/EXE o DMG.</p></div>
+            </li>
+            <li>
+              <span class="mini-step-num" aria-hidden="true">3</span>
+              <div><strong>Crea tu primer diagrama</strong><p>Abre un ejemplo y ejecútalo.</p></div>
+            </li>
+          </ol>
+          <p class="fine-print" data-release-howto-note>Los requisitos definitivos y el texto de la licencia de uso se publicarán junto con los instaladores.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="preguntas">
+      <div class="container faq-layout">
+        <header class="section-head section-head-left" data-reveal>
+          <p class="eyebrow">Preguntas frecuentes</p>
+          <h2>Lo que conviene saber antes de empezar.</h2>
+          <p class="section-lead">Descargas, privacidad, formatos y alcance de la aplicación.</p>
+        </header>
+
+        <div class="faq-list" data-reveal>
+          <details class="faq-item" open>
+            <summary data-release-faq-question>¿Cuándo estarán disponibles las descargas?</summary>
+            <div class="faq-body">
+              <p data-release-faq-answer>Todavía no hay una fecha pública. Los instaladores para Windows y macOS están en preparación. Esta página mostrará los enlaces de descarga, los requisitos definitivos y las notas de la versión en cuanto se publiquen.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>¿Qué incluye LogiFlow Edu?</summary>
+            <div class="faq-body">
+              <p>Un editor con <strong>25 figuras de instrucción</strong>, ejecución y depuración paso a paso, consola y monitor de variables, diagnósticos con códigos <code>LF####</code>, exportación SVG/PNG, pseudocódigo y Python, tortuga, Karel, 17 programas de ejemplo y un manual consultable sin conexión.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>¿Cuánto cuesta LogiFlow Edu?</summary>
+            <div class="faq-body">
+              <p>Se distribuirá como <strong>freeware</strong>: sin costo. Es un producto con licencia propietaria; el texto de la licencia de uso (EULA) se publicará junto con los instaladores.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>¿Necesito conexión a Internet o una cuenta?</summary>
+            <div class="faq-body">
+              <p>No. Todo el trabajo es local y no necesitas crear una cuenta ni estar conectado. La edición, la ejecución y el guardado funcionan sin Internet.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>¿Dónde se guardan mis diagramas?</summary>
+            <div class="faq-body">
+              <p>Los diagramas se guardan como archivos <code>.lfd</code> en la carpeta que elijas. Las preferencias y los borradores de recuperación se guardan cifrados en los datos locales de la aplicación.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>¿Puedo abrir archivos de otros programas de diagramas?</summary>
+            <div class="faq-body">
+              <p>No. LogiFlow Edu usa su propio formato <code>.lfd</code> y no importa ni exporta archivos <code>.fprg</code> o <code>.fpgt</code> de otros productos. Los ejemplos y documentos creados con la aplicación se abren directamente.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>¿En qué idiomas y plataformas funciona?</summary>
+            <div class="faq-body">
+              <p>La interfaz está en <strong>español de México (es-MX)</strong> y en <strong>inglés (en-US)</strong>, y puedes cambiar de idioma sin alterar la sintaxis de las expresiones. Las plataformas objetivo con soporte son Windows y macOS; Linux conserva portabilidad en el código, pero no hay soporte prometido.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>¿Sirve para el aula?</summary>
+            <div class="faq-body">
+              <p>Sí. Incluye reporte de trazabilidad de los guardados y comparador de similitud entre entregas, además de 17 ejemplos y objetivos de Karel. Son apoyos para el docente: la evidencia es correlativa y la decisión final siempre es humana.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <div class="container final-cta-inner" data-reveal>
+        <div>
+          <p class="eyebrow eyebrow-light">LogiFlow Edu</p>
+          <h2>Tu primer diagrama está a un clic.</h2>
+          <p data-release-final-copy>Cuando los instaladores estén listos, podrás descargar LogiFlow Edu para Windows o macOS desde esta página.</p>
+        </div>
+        <div class="final-actions">
+          <a class="btn btn-light" href="#descargas">
+            Ver estado de las descargas
+            <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+          </a>
+          <a class="btn btn-outline-light" href="#funciones">Conocer las funciones</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="#inicio" aria-label="LogiFlow Edu, ir al inicio">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="6" y="6" width="52" height="14" rx="7"/>
+              <path d="M32 20v9"/>
+              <path d="M32 29l16 11-16 11-16-11z"/>
+              <path d="M16 40H6M48 40h10"/>
+            </svg>
+          </span>
+          <span class="brand-name">LogiFlow <span>Edu</span></span>
+        </a>
+        <p>Un entorno visual y sin conexión para aprender algoritmos con diagramas de flujo.</p>
+        <span class="footer-status"><span class="status-dot" aria-hidden="true"></span><span data-release-footer-status>En preparación</span></span>
+      </div>
+
+      <nav class="footer-col" aria-label="Producto">
+        <h2>Producto</h2>
+        <ul>
+          <li><a href="#funciones">Funciones</a></li>
+          <li><a href="#galeria">Galería</a></li>
+          <li><a href="#practicar">Karel y tortuga</a></li>
+          <li><a href="#descargas">Descargas</a></li>
+        </ul>
+      </nav>
+
+      <nav class="footer-col" aria-label="Aprender">
+        <h2>Aprender</h2>
+        <ul>
+          <li><a href="#como-funciona">Cómo funciona</a></li>
+          <li><a href="#codigo">Código generado</a></li>
+          <li><a href="#aula">Aula</a></li>
+          <li><a href="#preguntas">Preguntas frecuentes</a></li>
+        </ul>
+      </nav>
+
+      <nav class="footer-col" aria-label="Información">
+        <h2>Información</h2>
+        <ul>
+          <li><a href="#privacidad">Privacidad</a></li>
+          <li><a href="#preguntas">Licencia y uso</a></li>
+          <li><a href="#descargas">Estado del lanzamiento</a></li>
+          <li><a href="#inicio">Inicio</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>© <span data-year>2026</span> LogiFlow Edu. Todos los derechos reservados.</p>
+      <p>Símbolos, ilustraciones y textos propios. Hecho para aprender.</p>
+      <a class="back-top" href="#inicio">Volver arriba <svg class="icon" aria-hidden="true"><use href="#i-arrow-down"></use></svg></a>
+    </div>
+  </footer>
+
+  <script src="assets/js/releases.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>
+
+

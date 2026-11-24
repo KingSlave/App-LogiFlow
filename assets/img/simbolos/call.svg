@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 60" width="300" height="60" role="img" aria-label="Llamar">
+  <title>Llamar</title>
+  <path d="M 0 0 L 300 0 L 300 60 L 0 60 Z" fill="#f4ecfa" stroke="#6a3d8f" stroke-width="2" stroke-linejoin="round" />
+  <path d="M 8 6 V 54" fill="none" stroke="#6a3d8f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M 15 6 V 54" fill="none" stroke="#6a3d8f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+</svg>

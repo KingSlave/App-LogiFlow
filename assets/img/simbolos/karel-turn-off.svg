@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 66" width="280" height="66" role="img" aria-label="Karel: apagar">
+  <title>Karel: apagar</title>
+  <path d="M 11.88 0 L 268.12 0 L 280 11.88 L 280 54.12 L 268.12 66 L 11.88 66 L 0 54.12 L 0 11.88 Z" fill="#e6f2f7" stroke="#14506b" stroke-width="2" stroke-linejoin="round" />
+  <path d="M 252 6 L 274 28" fill="none" stroke="#14506b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M 262 6 L 274 18" fill="none" stroke="#14506b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
